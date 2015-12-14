@@ -1,11 +1,11 @@
 package se.lohnn.imagecropper.views;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.widget.ImageView;
-
-import se.lohnn.imagecropper.Cropper;
 
 /**
  * Copyright (C) lohnn on 2015.
@@ -27,10 +27,15 @@ public class CropperView extends ImageView {
     private Paint cropFramePaint;
     private Rect visibleArea = new Rect();
     private float screenPercentage = 0.15f;
+    private float cropperRatio = 1f;
 
-    public CropperView(Cropper cropper) {
+    public CropperView(Context cropper) {
         super(cropper);
         init();
+    }
+
+    public void setRatio(int w, int h) {
+        cropperRatio = (float) w / h;
     }
 
     private void init() {
@@ -48,20 +53,29 @@ public class CropperView extends ImageView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        //Variable containing the rectangle's (square's) side length
-        int rectangleSideSize;
-        //Screen is higher than wide
-        if (getMeasuredHeight() > getMeasuredWidth()) {
-            rectangleSideSize = getMeasuredWidth() - Math.round((float) getMeasuredWidth() * screenPercentage);
-        } else { //Screen is wider than high (or same dimensions)
-            rectangleSideSize = getMeasuredHeight() - Math.round((float) getMeasuredHeight() * screenPercentage);
+        float screenRatio = (float) getMeasuredWidth() / getMeasuredHeight();
+
+        Log.d("Ratios", cropperRatio + " : " + screenRatio);
+
+        int rectangleWidth;
+        int rectangleHeight;
+
+        //Screens ratio is wider than croppers ratio
+        if (screenRatio > cropperRatio) {
+            //Use height
+            rectangleWidth = getMeasuredHeight() - Math.round((float) getMeasuredHeight() * screenPercentage);
+            rectangleHeight = Math.round(rectangleWidth * cropperRatio);
+        } else {
+            //Use width
+            rectangleHeight = getMeasuredWidth() - Math.round((float) getMeasuredWidth() * screenPercentage);
+            rectangleWidth = Math.round(rectangleHeight * cropperRatio);
         }
 
         //Calculate visible rectangle edge positions
-        int left = (getMeasuredWidth() / 2) - (rectangleSideSize / 2);
-        int right = (getMeasuredWidth() / 2) + (rectangleSideSize / 2);
-        int top = (getMeasuredHeight() / 2) - (rectangleSideSize / 2);
-        int bottom = (getMeasuredHeight() / 2) + (rectangleSideSize / 2);
+        int left = (getMeasuredWidth() / 2) - (rectangleWidth / 2);
+        int right = (getMeasuredWidth() / 2) + (rectangleWidth / 2);
+        int top = (getMeasuredHeight() / 2) - (rectangleHeight / 2);
+        int bottom = (getMeasuredHeight() / 2) + (rectangleHeight / 2);
 
         visibleArea.set(left, top, right, bottom);
     }
