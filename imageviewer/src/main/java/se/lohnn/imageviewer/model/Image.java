@@ -1,10 +1,7 @@
-package se.lohnn.imagecropper.image;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+package se.lohnn.imageviewer.model;
 
 /**
- * Copyright (C) lohnn on 2015.
+ * Copyright (C) lohnn-macPro on 20/02/16.
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +15,5 @@ import android.graphics.BitmapFactory;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class ImageLoader {
-    public static Bitmap loadImage(String path) {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-        return bitmap;
-    }
+public class Image {
 }

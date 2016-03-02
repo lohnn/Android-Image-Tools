@@ -1,16 +1,21 @@
-package se.lohnn.imagecropper;
+package se.lohnn.imageviewer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 
-import se.lohnn.imagecropper.image.ImageLoader;
-import se.lohnn.imagecropper.views.CropperView;
+import se.lohnn.imageviewer.image.ImageLoader;
+import se.lohnn.imageviewer.views.ImageViewerView;
 
-public class Cropper extends AppCompatActivity {
+public class ImageViewer extends AppCompatActivity {
     public static final String IMAGE_PATH = "ImagePath";
-    public static final String CROPPING_DIMENSIONS = "CroppingDimensions";
+
+    private ImageViewerView imageViewer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +23,13 @@ public class Cropper extends AppCompatActivity {
 
         Intent intent = getIntent();
         String imageLocation = intent.getStringExtra(IMAGE_PATH);
-        CropperView cropperView = new CropperView(this);
-        cropperView.setImageBitmap(ImageLoader.loadImage(imageLocation));
+
+        imageViewer = new ImageViewerView(this);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        Bitmap image = ImageLoader.loadImage(imageLocation, metrics.widthPixels, metrics.heightPixels);
+        imageViewer.setImageBitmap(image);
         //TODO: Error handling here (check if file exists, is an etc.)
 
 
@@ -27,9 +37,10 @@ public class Cropper extends AppCompatActivity {
         if (toolbar != null) {
             //TODO: Setup toolbar
             toolbar.setTitle("HEJSAN");
+            toolbar.hide();
         }
 
-        setContentView(cropperView);
+        setContentView(imageViewer);
 
         /*
         Intent returnIntent = new Intent();
@@ -42,5 +53,10 @@ public class Cropper extends AppCompatActivity {
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
         */
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

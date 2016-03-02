@@ -1,6 +1,4 @@
-package se.lohnn.imagecropper.image;
-
-import android.graphics.Point;
+package se.lohnn.imageviewer.image;
 
 /**
  * Copyright (C) lohnn on 2015.
@@ -17,22 +15,12 @@ import android.graphics.Point;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class CropData {
+public class ImageData {
     int width;
     int height;
     float ratio;
-    Point start;
-    Point end;
 
-    public CropData(int width, int height, Point start, Point end, float ratio) {
-        this.width = width;
-        this.height = height;
-        this.start = start;
-        this.end = end;
-        this.ratio = ratio;
-    }
-
-    public CropData(int width, int height, float ratio) {
+    public ImageData(int width, int height, float ratio) {
         this.width = width;
         this.height = height;
         this.ratio = ratio;

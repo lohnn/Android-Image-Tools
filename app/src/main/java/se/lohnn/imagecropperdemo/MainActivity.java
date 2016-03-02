@@ -1,12 +1,12 @@
 package se.lohnn.imagecropperdemo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,8 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import se.lohnn.imagecropper.Cropper;
-import se.lohnn.imagecropper.CroppingDimensions;
+import se.lohnn.imageviewer.ImageViewer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,31 +28,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button cropperStart = (Button) findViewById(R.id.buttonStartCropping);
-        cropperStart.setOnClickListener(new View.OnClickListener() {
+
+        openImageViewer(this);
+        /*cropperStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cropperIntent = new Intent(v.getContext(), Cropper.class);
-                ArrayList<CroppingDimensions> cropDims = new ArrayList<>();
-                cropDims.add(new CroppingDimensions(1, 1));
-                cropperIntent.putExtra(Cropper.CROPPING_DIMENSIONS, cropDims);
-
-                File cacheDir = getCacheDir();
-                String tempImageFileName = "testImage.jpg";
-                File tempImageFile = new File(cacheDir, tempImageFileName);
-                //If demo app has not been run before
-                //(temp image in cache folder does not exist)
-                if (!tempImageFile.exists()) {
-                    //Load image from asset
-                    Bitmap tempImage = getBitmapFromAsset(getAssets(), tempImageFileName);
-                    //Save image to cache folder
-                    tempImageFile.getParentFile().mkdirs();
-                    saveImageToFile(tempImage, tempImageFile);
-                }
-
-                cropperIntent.putExtra(Cropper.IMAGE_PATH, tempImageFile.getAbsolutePath());
-                startActivityForResult(cropperIntent, CROP_REQUEST);
+                openImageViewer(v.getContext());
             }
-        });
+        });*/
+    }
+
+    private void openImageViewer(Context context) {
+        Intent cropperIntent = new Intent(context, ImageViewer.class);
+        File cacheDir = getCacheDir();
+        String tempImageFileName = "testImage.jpg";
+        File tempImageFile = new File(cacheDir, tempImageFileName);
+        //If demo app has not been run before
+        //(temp image in cache folder does not exist)
+        if (!tempImageFile.exists()) {
+            //Load image from asset
+            Bitmap tempImage = getBitmapFromAsset(getAssets(), tempImageFileName);
+            //Save image to cache folder
+            tempImageFile.getParentFile().mkdirs();
+            saveImageToFile(tempImage, tempImageFile);
+        }
+
+        cropperIntent.putExtra(ImageViewer.IMAGE_PATH, tempImageFile.getAbsolutePath());
+        startActivityForResult(cropperIntent, CROP_REQUEST);
     }
 
     /**
