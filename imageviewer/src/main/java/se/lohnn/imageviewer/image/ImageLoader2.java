@@ -20,8 +20,8 @@ import android.util.Log;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class ImageLoader {
-    private static String TAG = "ImageLoader";
+public class ImageLoader2 {
+    private static String TAG = "ImageLoader2";
 
     public static Bitmap loadImage(String path, int widthPixels, int heightPixels) {
         final BitmapFactory.Options options = new BitmapFactory.Options();

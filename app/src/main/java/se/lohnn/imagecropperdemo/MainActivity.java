@@ -7,14 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import se.lohnn.imageviewer.ImageViewer;
 
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             saveImageToFile(tempImage, tempImageFile);
         }
 
-        cropperIntent.putExtra(ImageViewer.IMAGE_PATH, tempImageFile.getAbsolutePath());
+        cropperIntent.putExtra(ImageViewer.Companion.getIMAGE_PATH(), tempImageFile.getAbsolutePath());
         startActivityForResult(cropperIntent, CROP_REQUEST);
     }
 
