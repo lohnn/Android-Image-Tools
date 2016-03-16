@@ -5,6 +5,10 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.util.Log
 import android.widget.ImageView
 
@@ -24,9 +28,9 @@ import android.widget.ImageView
  * limitations under the License.
  */
 
-class ImageViewerView(context: Context?) : ImageView(context) {
+class ImageViewerView(context: Context?) : ImageView(context), SensorEventListener {
     companion object {
-        val TAG = "ImageViewerView"
+        final val TAG = "ImageViewerView"
     }
 
     private var bitmap: Bitmap? = null
@@ -35,6 +39,20 @@ class ImageViewerView(context: Context?) : ImageView(context) {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         bitmap = (drawable as BitmapDrawable).bitmap
+    }
+
+
+    fun setSensorManager(sensorManager: SensorManager) {
+        val senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    override fun onSensorChanged(p0: SensorEvent?) {
+        //        throw UnsupportedOperationException()
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        //        throw UnsupportedOperationException()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -67,6 +85,10 @@ class ImageViewerView(context: Context?) : ImageView(context) {
     }
 
     override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
+        //super.onDraw(canvas)
+
+        if (bitmap == null) return
+        if (width == 0 || height == 0) return
+        canvas?.drawBitmap(bitmap, null, imageRect, null)
     }
 }

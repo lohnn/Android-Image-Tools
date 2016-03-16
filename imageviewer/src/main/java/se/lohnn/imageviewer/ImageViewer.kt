@@ -1,5 +1,7 @@
 package se.lohnn.imageviewer
 
+import android.content.Context
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
@@ -39,6 +41,7 @@ class ImageViewer() : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(metrics)
         val image = ImageLoader.loadImage(imageLocation, metrics.widthPixels, metrics.heightPixels)
         imageViewer?.setImageBitmap(image)
+        imageViewer?.setSensorManager(getSystemService(Context.SENSOR_SERVICE) as SensorManager)
 
         val toolbar = supportActionBar
         toolbar?.title = "Hejsan"
