@@ -60,7 +60,7 @@ class ImageViewerView(context: Context?) : ImageView(context), SensorEventListen
 
         Log.d(TAG, "In onMeasure")
 
-        if (bitmap == null) return
+        if (drawable == null) return
 
         val imageRatio = drawable.intrinsicHeight.toFloat() / drawable.intrinsicWidth
         val screenRatio = measuredWidth.toFloat() / measuredHeight
@@ -87,7 +87,9 @@ class ImageViewerView(context: Context?) : ImageView(context), SensorEventListen
     override fun onDraw(canvas: Canvas?) {
         //super.onDraw(canvas)
 
-        if (bitmap == null) return
+        if (drawable == null) return
+        if (bitmap == null) bitmap = (drawable as BitmapDrawable).bitmap
+
         if (width == 0 || height == 0) return
         canvas?.drawBitmap(bitmap, null, imageRect, null)
     }
